@@ -4,7 +4,7 @@ function getRandomColor() {
 }
 
 function getRandomFlickerAnimation() {
-  const duration = (Math.random() * 0.9).toFixed(2);
+  const duration = (Math.random() * 0.9).toFixed(3);
   const delay = (Math.random() * 0.6).toFixed(2);
   const steps = Math.floor(Math.random() * 3) + 1;
   return { duration, delay, steps };
