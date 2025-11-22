@@ -31,6 +31,11 @@ function turnBulbsOn(value, duration) {
   });
 }
 
+function getRandomRotation() {
+  const angle = (Math.random() - 0.5) * 90; // Range: -45 to +45
+  return `${angle.toFixed(2)}deg`;
+}
+
 function setBulbs() {
   const bulbs = document.querySelectorAll(".bulb");
   bulbs.forEach((bulb, key) => {
@@ -45,6 +50,7 @@ function setBulbs() {
     const filckerAnimation = `flicker ${duration}s steps(${steps}, end) ${delay}s infinite`;
     bulb.style.setProperty("--bg", currentColor);
     bulb.style.setProperty("--filckerAnimation", filckerAnimation);
+    bulb.style.setProperty("--deg", getRandomRotation());
   });
 }
 

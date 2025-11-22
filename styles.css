@@ -60,7 +60,7 @@ body {
   justify-content: space-between;
   padding-inline: 20px;
   font-size: 1rem;
-  @media (min-width: 1024px) {
+  @media (min-width: 1035px) {
     font-size: 1.5rem;
   }
 }
@@ -71,7 +71,7 @@ body {
   color: white;
   margin: auto;
   margin-top: 80px;
-  @media (min-width: 1024px) {
+  @media (min-width: 1035px) {
     padding: 20px;
     width: 70%;
   }
@@ -86,7 +86,7 @@ body {
   flex-grow: 2;
   margin-block: 8px;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1035px) {
     flex-wrap: nowrap;
     gap: 60px;
   }
@@ -99,7 +99,7 @@ body {
   align-items: center;
   font-size: 1.5rem;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1035px) {
     font-size: 6rem;
   }
 }
@@ -111,6 +111,7 @@ body {
   transition: ease-in-out 0.5s;
   background-color: var(--bg);
   opacity: 0.15;
+  transform: rotate(var(--deg)) !important;
 }
 
 .wall .letter-container .bulb-on {
@@ -134,7 +135,7 @@ body {
   font-size: 2rem;
   width: 90%;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1035px) {
     width: 30%;
   }
 }
@@ -193,7 +194,7 @@ body {
   bottom: 0;
   right: 0;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1035px) {
     width: 20%;
   }
 }
