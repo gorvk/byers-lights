@@ -1,0 +1,102 @@
+function getRandomColor() {
+  const colors = ["#FF0077", "#FF6A00", "#00F5FF", "#00FF00"];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+function getRandomFlickerAnimation() {
+  const duration = (Math.random() * 0.9).toFixed(2);
+  const delay = (Math.random() * 0.6).toFixed(2);
+  const steps = Math.floor(Math.random() * 3) + 1;
+  return { duration, delay, steps };
+}
+
+function turnBulbsOn(value, duration) {
+  const letterContainers = document.querySelectorAll(".letter-container");
+  letterContainers.forEach((container) => {
+    if (container.id === value.toUpperCase()) {
+      const bulb = container.querySelector(".bulb");
+      bulb.classList.add("bulb-on");
+      setTimeout(() => {
+        bulb.classList.remove("bulb-on");
+      }, duration);
+    }
+  });
+}
+
+function setBulbs() {
+  const bulbs = document.querySelectorAll(".bulb");
+  bulbs.forEach((bulb, key) => {
+    let currentColor = getRandomColor();
+    const { duration, delay, steps } = getRandomFlickerAnimation();
+    const prevBulb = bulbs[key - 1];
+    const prevColor = prevBulb && prevBulb.style.getPropertyValue("--bg");
+    while (key !== 0 && prevColor === currentColor) {
+      currentColor = getRandomColor();
+    }
+
+    const filckerAnimation = `flicker ${duration}s steps(${steps}, end) ${delay}s infinite`;
+    bulb.style.setProperty("--bg", currentColor);
+    bulb.style.setProperty("--filckerAnimation", filckerAnimation);
+  });
+}
+
+function flickerRandomnly() {
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach((letter) => {
+    turnBulbsOn(letter, 500);
+  });
+}
+
+function setInput(duration) {
+  const input = document.getElementById("letter-input");
+  input.addEventListener("input", (event) => {
+    const value = event.target.value;
+    const letter = value.slice(value.length - 1);
+    turnBulbsOn(letter, duration);
+  });
+}
+
+function setCopyButton() {
+  document.querySelector(".copy-btn").addEventListener("click", () => {
+    const input = document.getElementById("letter-input");
+    if (input.value) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("q", input.value);
+      navigator.clipboard.writeText(url.toString());
+      const dialog = document.querySelector(".dialog");
+      dialog.style.display = "block";
+      setTimeout(() => {
+        dialog.style.display = "none";
+      }, 2000);
+    }
+  });
+}
+
+function displayMessage(duration) {
+  const params = new URLSearchParams(window.location.search);
+  const searchQuery = params.get("q") || null;
+  if (!searchQuery) {
+    flickerRandomnly();
+    return;
+  }
+  const phrase = searchQuery.split("");
+  phrase.forEach((letter, idx) => {
+    setTimeout(() => {
+      turnBulbsOn(letter, duration);
+      if (idx === phrase.length - 1) {
+        setTimeout(() => {
+          flickerRandomnly();
+        }, duration);
+      }
+    }, duration * idx);
+  });
+}
+
+function init() {
+  const DURATION = 2000;
+  setBulbs();
+  setInput(DURATION);
+  setCopyButton();
+  displayMessage(DURATION);
+}
+
+init();
