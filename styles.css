@@ -51,6 +51,20 @@ body {
   background-color: black;
 }
 
+.header {
+  font-family: var(--font);
+  color: white;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 20px;
+  font-size: 1rem;
+  @media (min-width: 1024px) {
+    font-size: 1.5rem;
+  }
+}
+
 .wall {
   font-family: var(--font);
   text-align: center;
@@ -182,4 +196,12 @@ body {
   @media (min-width: 1024px) {
     width: 20%;
   }
+}
+
+.gorvk-link {
+  color: aqua;
+}
+
+.gorvk-link:hover {
+  color: chartreuse;
 }

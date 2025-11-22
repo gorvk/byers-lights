@@ -11,9 +11,17 @@ function getRandomFlickerAnimation() {
 }
 
 function turnBulbsOn(value, duration) {
+  const A_CODE = "A".charCodeAt(0);
+  const Z_CODE = "Z".charCodeAt(0);
+  const letter = value.toUpperCase();
+
+  if (!(letter.charCodeAt(0) >= A_CODE && letter.charCodeAt(0) <= Z_CODE)) {
+    return;
+  }
+
   const letterContainers = document.querySelectorAll(".letter-container");
   letterContainers.forEach((container) => {
-    if (container.id === value.toUpperCase()) {
+    if (container.id === letter.toUpperCase()) {
       const bulb = container.querySelector(".bulb");
       bulb.classList.add("bulb-on");
       setTimeout(() => {
@@ -78,7 +86,7 @@ function displayMessage(duration) {
     flickerRandomnly();
     return;
   }
-  const phrase = searchQuery.split("");
+  const phrase = searchQuery.split("").filter((v) => v.trim());
   phrase.forEach((letter, idx) => {
     setTimeout(() => {
       turnBulbsOn(letter, duration);
