@@ -129,6 +129,7 @@ body {
     0 0 5px 2px var(--bg), inset -2px -4px 1px #000a;
   opacity: 1;
   animation: var(--filckerAnimation);
+  transform: rotate(var(--deg)) !important;
 }
 
 .letter-input {
