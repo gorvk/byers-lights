@@ -12,7 +12,6 @@
   0% {
     opacity: 0.3;
     filter: brightness(1) saturate(1.3);
-    transform: scale(1);
   }
   7% {
     opacity: 0.6;
@@ -37,11 +36,9 @@
   70% {
     opacity: 1;
     filter: brightness(1.5) saturate(1.6);
-    transform: scale(1.03);
   }
   100% {
     opacity: 1;
-    transform: scale(1);
     filter: brightness(1) saturate(1.3);
   }
 }
@@ -121,7 +118,7 @@ body {
   transition: ease-in-out 0.5s;
   background-color: var(--bg);
   opacity: 0.15;
-  transform: rotate(var(--deg)) !important;
+  transform: rotate(var(--deg));
 }
 
 .wall .letter-container .bulb-on {
@@ -129,7 +126,6 @@ body {
     0 0 5px 2px var(--bg), inset -2px -4px 1px #000a;
   opacity: 1;
   animation: var(--filckerAnimation);
-  transform: rotate(var(--deg)) !important;
 }
 
 .letter-input {
