@@ -1,6 +1,13 @@
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 let soundBuffer = null;
 
+function isAlpha(char) {
+  const A_CODE = "A".charCodeAt(0);
+  const Z_CODE = "Z".charCodeAt(0);
+  const letter = char.toUpperCase();
+  return letter.charCodeAt(0) >= A_CODE && letter.charCodeAt(0) <= Z_CODE;
+}
+
 async function loadSound() {
   const response = await fetch("public/bulb.mp3");
   const arrayBuffer = await response.arrayBuffer();
@@ -31,11 +38,8 @@ function getRandomFlickerAnimation() {
 }
 
 function turnBulbsOn(value, duration) {
-  const A_CODE = "A".charCodeAt(0);
-  const Z_CODE = "Z".charCodeAt(0);
   const letter = value.toUpperCase();
-
-  if (!(letter.charCodeAt(0) >= A_CODE && letter.charCodeAt(0) <= Z_CODE)) {
+  if (!isAlpha(letter)) {
     return;
   }
 
@@ -44,7 +48,7 @@ function turnBulbsOn(value, duration) {
     if (container.id === letter.toUpperCase()) {
       const bulb = container.querySelector(".bulb");
       bulb.classList.add("bulb-on");
-      playSound()
+      playSound();
       setTimeout(() => {
         bulb.classList.remove("bulb-on");
       }, duration);
@@ -108,7 +112,10 @@ function setCopyButton() {
     const input = document.getElementById("letter-input");
     if (input.value) {
       const url = new URL(window.location.href);
-      url.searchParams.set("q", input.value);
+      const value = input.value.split("").filter((char) => {
+        return isAlpha(char.toUpperCase());
+      });
+      url.searchParams.set("q", btoa(value.join()));
       navigator.clipboard.writeText(url.toString());
       displayTimedSnackbar("message link copied to clipboard!", 2000);
     }
@@ -117,7 +124,7 @@ function setCopyButton() {
 
 function displayMessage(duration) {
   const params = new URLSearchParams(window.location.search);
-  const searchQuery = params.get("q") || null;
+  const searchQuery = atob(params.get("q") || "");
   if (!searchQuery) {
     flickerRandomnly();
     return;
@@ -137,13 +144,13 @@ function displayMessage(duration) {
 
 async function init() {
   setBulbs();
-  await loadSound('./bulb.mp3');
+  await loadSound("./bulb.mp3");
   toggleSnackbar(true, "click anywhere to start");
 
   document.addEventListener(
     "click",
     () => {
-      const DURATION = 2000;
+      const DURATION = 1000;
       toggleSnackbar(false);
       setInput(DURATION);
       setCopyButton();
