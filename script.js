@@ -142,6 +142,16 @@ function displayMessage(duration) {
   });
 }
 
+function bindLettersWithInput(duration) {
+  const input = document.getElementById("letter-input");
+  document.querySelectorAll(".letter-container").forEach((node) => {
+    node.addEventListener("click", () => {
+      input.value += node.id;
+      turnBulbsOn(node.id, duration);
+    });
+  });
+}
+
 async function init() {
   setBulbs();
   await loadSound("./bulb.mp3");
@@ -154,6 +164,7 @@ async function init() {
       toggleSnackbar(false);
       setInput(DURATION);
       setCopyButton();
+      bindLettersWithInput(DURATION);
       displayMessage(DURATION);
     },
     { once: true }
