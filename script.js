@@ -1,3 +1,23 @@
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+let soundBuffer = null;
+
+async function loadSound() {
+  const response = await fetch("public/bulb.mp3");
+  const arrayBuffer = await response.arrayBuffer();
+  soundBuffer = await audioContext.decodeAudioData(arrayBuffer);
+}
+
+function playSound() {
+  if (!soundBuffer) {
+    return;
+  }
+
+  const source = audioContext.createBufferSource();
+  source.buffer = soundBuffer;
+  source.connect(audioContext.destination);
+  source.start();
+}
+
 function getRandomColor() {
   const colors = ["#FF0077", "#FF6A00", "#00F5FF", "#00FF00"];
   return colors[Math.floor(Math.random() * colors.length)];
@@ -14,7 +34,6 @@ function turnBulbsOn(value, duration) {
   const A_CODE = "A".charCodeAt(0);
   const Z_CODE = "Z".charCodeAt(0);
   const letter = value.toUpperCase();
-  const audio = new Audio(`public/bulb.mp3`);
 
   if (!(letter.charCodeAt(0) >= A_CODE && letter.charCodeAt(0) <= Z_CODE)) {
     return;
@@ -25,7 +44,7 @@ function turnBulbsOn(value, duration) {
     if (container.id === letter.toUpperCase()) {
       const bulb = container.querySelector(".bulb");
       bulb.classList.add("bulb-on");
-      audio.play();
+      playSound()
       setTimeout(() => {
         bulb.classList.remove("bulb-on");
       }, duration);
@@ -116,8 +135,9 @@ function displayMessage(duration) {
   });
 }
 
-function init() {
+async function init() {
   setBulbs();
+  await loadSound('./bulb.mp3');
   toggleSnackbar(true, "click anywhere to start");
 
   document.addEventListener(
