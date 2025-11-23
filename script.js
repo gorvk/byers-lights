@@ -1,8 +1,3 @@
-function playBulbSound() {
-  const audio = new Audio(`/public/bulb.mp3`);
-  audio.play();
-}
-
 function getRandomColor() {
   const colors = ["#FF0077", "#FF6A00", "#00F5FF", "#00FF00"];
   return colors[Math.floor(Math.random() * colors.length)];
@@ -19,6 +14,7 @@ function turnBulbsOn(value, duration) {
   const A_CODE = "A".charCodeAt(0);
   const Z_CODE = "Z".charCodeAt(0);
   const letter = value.toUpperCase();
+  const audio = new Audio(`public/bulb.mp3`);
 
   if (!(letter.charCodeAt(0) >= A_CODE && letter.charCodeAt(0) <= Z_CODE)) {
     return;
@@ -29,7 +25,7 @@ function turnBulbsOn(value, duration) {
     if (container.id === letter.toUpperCase()) {
       const bulb = container.querySelector(".bulb");
       bulb.classList.add("bulb-on");
-      playBulbSound();
+      audio.play();
       setTimeout(() => {
         bulb.classList.remove("bulb-on");
       }, duration);
