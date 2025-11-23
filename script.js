@@ -1,3 +1,8 @@
+function playBulbSound() {
+  const audio = new Audio(`/public/bulb.mp3`);
+  audio.play();
+}
+
 function getRandomColor() {
   const colors = ["#FF0077", "#FF6A00", "#00F5FF", "#00FF00"];
   return colors[Math.floor(Math.random() * colors.length)];
@@ -24,6 +29,7 @@ function turnBulbsOn(value, duration) {
     if (container.id === letter.toUpperCase()) {
       const bulb = container.querySelector(".bulb");
       bulb.classList.add("bulb-on");
+      playBulbSound();
       setTimeout(() => {
         bulb.classList.remove("bulb-on");
       }, duration);
@@ -69,6 +75,19 @@ function setInput(duration) {
   });
 }
 
+function toggleSnackbar(toggle, message) {
+  const dialog = document.querySelector(".dialog");
+  dialog.textContent = message;
+  dialog.style.display = toggle ? "block" : "none";
+}
+
+function displayTimedSnackbar(message, duration) {
+  toggleSnackbar(true, message);
+  setTimeout(() => {
+    toggleSnackbar(false, message);
+  }, duration);
+}
+
 function setCopyButton() {
   document.querySelector(".copy-btn").addEventListener("click", () => {
     const input = document.getElementById("letter-input");
@@ -76,11 +95,7 @@ function setCopyButton() {
       const url = new URL(window.location.href);
       url.searchParams.set("q", input.value);
       navigator.clipboard.writeText(url.toString());
-      const dialog = document.querySelector(".dialog");
-      dialog.style.display = "block";
-      setTimeout(() => {
-        dialog.style.display = "none";
-      }, 2000);
+      displayTimedSnackbar("message link copied to clipboard!", 2000);
     }
   });
 }
@@ -106,11 +121,20 @@ function displayMessage(duration) {
 }
 
 function init() {
-  const DURATION = 2000;
   setBulbs();
-  setInput(DURATION);
-  setCopyButton();
-  displayMessage(DURATION);
+  toggleSnackbar(true, "click anywhere to start");
+
+  document.addEventListener(
+    "click",
+    () => {
+      const DURATION = 2000;
+      toggleSnackbar(false);
+      setInput(DURATION);
+      setCopyButton();
+      displayMessage(DURATION);
+    },
+    { once: true }
+  );
 }
 
 init();
